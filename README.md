@@ -1,3 +1,22 @@
+## Simulator version of PreferenceLoader
+This project aims to make testing tweak settings bundle possible on iOS simulator. [simject](https://github.com/angelXwind/simject) is required and used by this project.
+
+### Setting up simulator
+`make setup PL_SIMULATOR_VERSION=9.3` For instance, if you target iOS simulator 9.3
+
+Or
+
+`make setup` if you specify the version in locatesim.mk
+
+### Uninstallation
+`make remove PL_SIMULATOR_VERSION=9.3`
+
+Or
+
+`make remove` if you specify the version in locatesim.mk
+
+## Original README
+
 This is a drop-in replacement for Thomas Moore's PreferenceLoader project.
 I personally found this necessary, as there were various things about the existing PreferenceLoader I did not like.
 

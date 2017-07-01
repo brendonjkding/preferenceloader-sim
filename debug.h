@@ -6,9 +6,9 @@
 #endif
 
 #if DEBUG
-#	define PLLog(...) NSLog(@ DEBUG_TAG "! %s:%d: %@", __FILE__, __LINE__, [NSString stringWithFormat:__VA_ARGS__])
+#define PLLog(...) HBLogDebug(@ DEBUG_TAG "! %s:%d: %@", __FILE__, __LINE__, [NSString stringWithFormat:__VA_ARGS__])
 #else
-#	define PLLog(...)
+#define PLLog(...)
 #endif
 
 #endif

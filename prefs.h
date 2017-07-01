@@ -1,4 +1,6 @@
-#import <Preferences/Preferences.h>
+#import <Preferences/PSListController.h>
+#import <Preferences/PSSpecifier.h>
+#import <UIKit/UIFunctions.h>
 
 @interface PSListController (libprefs)
 - (NSArray *)specifiersFromEntry:(NSDictionary *)entry sourcePreferenceLoaderBundlePath:(NSString *)sourceBundlePath title:(NSString *)title;
@@ -16,3 +18,9 @@ extern NSString *const PLFilterKey;
 
 @interface PLLocalizedListController: PLCustomListController { }
 @end
+
+NSString *_realPath2(NSString *path) {
+  return [UISystemRootDirectory() stringByAppendingPathComponent: path];
+}
+
+#define _realPath(path) ([_realPath2(@path) UTF8String])
