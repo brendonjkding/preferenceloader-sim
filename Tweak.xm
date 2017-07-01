@@ -23,17 +23,17 @@ static BOOL _Firmware_lt_60 = NO;
 
 %hook PrefsListController
 static NSMutableArray *_loadedSpecifiers = nil;
-static int _extraPrefsGroupSectionID = 0;
+static NSInteger _extraPrefsGroupSectionID = 0;
 
 /* {{{ iPad Hooks */
 %group iPad
-- (NSString *)tableView:(id)view titleForHeaderInSection:(int)section {
+- (NSString *)tableView:(UITableView *)view titleForHeaderInSection:(NSInteger)section {
 	if([_loadedSpecifiers count] == 0) return %orig;
 	if(section == _extraPrefsGroupSectionID) return _Firmware_lt_60 ? @"Extensions" : NULL;
 	return %orig;
 }
 
-- (float)tableView:(id)view heightForHeaderInSection:(int)section {
+- (CGFloat)tableView:(UITableView *)view heightForHeaderInSection:(NSInteger)section {
 	if([_loadedSpecifiers count] == 0) return %orig;
 	if(section == _extraPrefsGroupSectionID) return _Firmware_lt_60 ? 22.0f : 10.f;
 	return %orig;
@@ -82,15 +82,15 @@ static NSInteger PSSpecifierSort(PSSpecifier *a1, PSSpecifier *a2, void *context
 			[_loadedSpecifiers addObjectsFromArray:specs];
 		}
 
-		[_loadedSpecifiers sortUsingFunction:&PSSpecifierSort context:NULL];
+		[_loadedSpecifiers sortUsingFunction:(NSInteger (*)(id, id, void *))&PSSpecifierSort context:NULL];
 
 		if([_loadedSpecifiers count] > 0) {
 			PLLog(@"so we gots us some specifiers! that's awesome! let's add them to the list...");
 			PSSpecifier *groupSpecifier = [PSSpecifier groupSpecifierWithName:_Firmware_lt_60 ? @"Extensions" : nil];
 			[_loadedSpecifiers insertObject:groupSpecifier atIndex:0];
 			NSMutableArray *_specifiers = MSHookIvar<NSMutableArray *>(self, "_specifiers");
-			int group, row;
-			int firstindex;
+			NSInteger group, row;
+			NSInteger firstindex;
 			if ([self getGroup:&group row:&row ofSpecifierID:_Firmware_lt_60 ? @"General" : @"TWITTER"]) {
 				firstindex = [self indexOfGroup:group] + [[self specifiersInGroup:group] count];
 				PLLog(@"Adding to the end of group %d at index %d", group, firstindex);
@@ -103,7 +103,7 @@ static NSInteger PSSpecifierSort(PSSpecifier *a1, PSSpecifier *a2, void *context
 			PLLog(@"getting group index");
 			NSUInteger groupIndex = 0;
 			for(PSSpecifier *spec in _specifiers) {
-				if(MSHookIvar<int>(spec, "cellType") != PSGroupCell) continue;
+				if(MSHookIvar<NSInteger>(spec, "cellType") != PSGroupCell) continue;
 				if(spec == groupSpecifier) break;
 				++groupIndex;
 			}
@@ -116,10 +116,14 @@ static NSInteger PSSpecifierSort(PSSpecifier *a1, PSSpecifier *a2, void *context
 %end
 
 %ctor {
-	%init();
+	Class targetRootClass = objc_getClass("PSUIPrefsListController");
+	if (targetRootClass == Nil) {
+		targetRootClass = objc_getClass("PrefsListController");
+	}
+	%init(PrefsListController = targetRootClass);
 
 	_Firmware_lt_60 = kCFCoreFoundationVersionNumber < 793.00;
-	if([UIDevice instancesRespondToSelector:@selector(isWildcat)] && [[UIDevice currentDevice] isWildcat])
+	if(([UIDevice instancesRespondToSelector:@selector(isWildcat)] && [[UIDevice currentDevice] isWildcat]) || (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad))
 		%init(iPad);
 
 	void *preferencesHandle = dlopen("/System/Library/PrivateFrameworks/Preferences.framework/Preferences", RTLD_LAZY | RTLD_NOLOAD);

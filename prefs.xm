@@ -249,7 +249,7 @@ static void pl_lazyLoadBundleCore(id self, SEL _cmd, PSSpecifier *specifier, voi
 %group Firmware_lt_60
 %hook PrefsRootController
 - (void)lazyLoadBundle:(PSSpecifier *)specifier {
-	pl_lazyLoadBundleCore(self, _cmd, specifier, &%orig);
+	pl_lazyLoadBundleCore(self, _cmd, specifier, (void(*)(id, SEL, PSSpecifier *))&%orig);
 
 }
 %end
@@ -258,7 +258,7 @@ static void pl_lazyLoadBundleCore(id self, SEL _cmd, PSSpecifier *specifier, voi
 %hook PSListController
 %group Firmware_ge_60
 - (void)lazyLoadBundle:(PSSpecifier *)specifier {
-	pl_lazyLoadBundleCore(self, _cmd, specifier, &%orig);
+	pl_lazyLoadBundleCore(self, _cmd, specifier, (void(*)(id, SEL, PSSpecifier *))&%orig);
 }
 %end
 
@@ -281,7 +281,7 @@ static void pl_lazyLoadBundleCore(id self, SEL _cmd, PSSpecifier *specifier, voi
 	if ([result respondsToSelector:@selector(setSpecifier:)])
 		[result setSpecifier:specifier];
 	else if ([result isKindOfClass:[PSListController class]]) {
-		NSArray *&_specifierIvar = MSHookIvar<NSArray *>(result, "_specifier");
+		PSSpecifier *&_specifierIvar = MSHookIvar<PSSpecifier *>(result, "_specifier");
 		[_specifierIvar release];
 		_specifierIvar = [specifier retain];
 	}
@@ -298,7 +298,7 @@ static void pl_lazyLoadBundleCore(id self, SEL _cmd, PSSpecifier *specifier, voi
 		return nil;
 
 	PLLog(@"Loading specifiers from PSListController's specifier's properties.");
-	NSArray *&bundleControllers = MSHookIvar<NSArray *>(self, "_bundleControllers");
+	NSMutableArray *&bundleControllers = MSHookIvar<NSMutableArray *>(self, "_bundleControllers");
 	NSString *title = nil;
 	NSString *specifierID = nil;
 	result = SpecifiersFromPlist(properties, [self specifier], target, plistName, [self bundle], &title, &specifierID, self, &bundleControllers);
@@ -363,7 +363,7 @@ static void pl_lazyLoadBundleCore(id self, SEL _cmd, PSSpecifier *specifier, voi
 	}
 
 	PLLog(@"loading specifiers!");
-	NSArray *&bundleControllers = MSHookIvar<NSArray *>(self, "_bundleControllers");
+	NSMutableArray *&bundleControllers = MSHookIvar<NSMutableArray *>(self, "_bundleControllers");
 	NSArray *specs = SpecifiersFromPlist(specifierPlist, nil, _Firmware_lt_60 ? [self rootController] : self, title, prefBundle, NULL, NULL, (PSListController*)self, &bundleControllers);
 	PLLog(@"loaded specifiers!");
 
