@@ -1,5 +1,5 @@
 DEBUG = 1
-TARGET = simulator:clang:latest
+TARGET = simulator:clang:latest:8.0
 
 include $(THEOS)/makefiles/common.mk
 
@@ -27,7 +27,7 @@ include $(THEOS_MAKE_PATH)/tweak.mk
 
 include locatesim.mk
 
-setup::
+setup:: all
 	@[ -d $(PL_SIMULATOR_BUNDLES_PATH) ] || sudo mkdir -p $(PL_SIMULATOR_BUNDLES_PATH)
 	@[ -d $(PL_SIMULATOR_PLISTS_PATH) ] || sudo mkdir -p $(PL_SIMULATOR_PLISTS_PATH)
 	@sudo cp -v $(THEOS_OBJ_DIR)/$(LIBRARY_NAME).dylib $(PL_SIMULATOR_ROOT)/usr/lib

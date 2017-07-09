@@ -355,7 +355,7 @@ static void pl_lazyLoadBundleCore(id self, SEL _cmd, PSSpecifier *specifier, voi
 
         // Third Try (/Library failed)
         if (![[NSFileManager defaultManager] fileExistsAtPath:bundlePath])
-            bundlePath = [NSString stringWithFormat:@"/System/Library/PreferenceBundles/%@.bundle", bundleName];
+            bundlePath = [NSString stringWithFormat:_realPath2(@"/System/Library/PreferenceBundles/%@.bundle"), bundleName];
 
         // Really? (/System/Library failed...)
         if (![[NSFileManager defaultManager] fileExistsAtPath:bundlePath]) {
