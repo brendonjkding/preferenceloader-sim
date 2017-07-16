@@ -15,8 +15,9 @@ Or
 
 `make remove` if you specify the version in locatesim.mk
 
-### Sample project
-[SimPref](https://github.com/PoomSmart/SimPref)
+### Sample projects
+* [SimPref](https://github.com/PoomSmart/SimPref)
+* [Emoji10 (iOS 6.0-8.2)](https://github.com/PoomSmart/Emoji10Legacy)
 
 # Original README
 
