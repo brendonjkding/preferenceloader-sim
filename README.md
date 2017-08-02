@@ -17,7 +17,7 @@ Or
 
 ### Sample projects
 * [SimPref](https://github.com/PoomSmart/SimPref)
-* [Emoji10 (iOS 6.0-8.2)](https://github.com/PoomSmart/Emoji10Legacy)
+* [Emoji10 (iOS 6.0-8.2)](https://github.com/PoomSmart/Emoji10-Legacy)
 
 # Original README
 
