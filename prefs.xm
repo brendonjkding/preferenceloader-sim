@@ -254,7 +254,7 @@ static void pl_lazyLoadBundleCore(id self, SEL _cmd, PSSpecifier *specifier, voi
 
 %group Firmware_lt_60
 %hook PrefsRootController
-- (void)lazyLoadBundle: (PSSpecifier *)specifier {
+- (void)lazyLoadBundle:(PSSpecifier *)specifier {
     pl_lazyLoadBundleCore(self, _cmd, specifier, (void (*)(id, SEL, PSSpecifier *))& %orig);
 
 }
@@ -263,13 +263,13 @@ static void pl_lazyLoadBundleCore(id self, SEL _cmd, PSSpecifier *specifier, voi
 
 %hook PSListController
 %group Firmware_ge_60
-- (void)lazyLoadBundle: (PSSpecifier *)specifier {
+- (void)lazyLoadBundle:(PSSpecifier *)specifier {
     pl_lazyLoadBundleCore(self, _cmd, specifier, (void (*)(id, SEL, PSSpecifier *))& %orig);
 }
 %end
 
 %new
-- (PSViewController *)controllerForSpecifier: (PSSpecifier *)specifier
+- (PSViewController *)controllerForSpecifier:(PSSpecifier *)specifier
 {
     %log();
     Class detailClass = [specifier respondsToSelector:@selector(detailControllerClass)] ? [specifier detailControllerClass] : MSHookIvar<Class>(specifier, "detailControllerClass");
@@ -321,7 +321,7 @@ static void pl_lazyLoadBundleCore(id self, SEL _cmd, PSSpecifier *specifier, voi
 %end
 
 %hook NSBundle
-+ (NSBundle *)bundleWithPath: (NSString *)path {
++ (NSBundle *)bundleWithPath:(NSString *)path {
     NSString *newPath = nil;
     NSRange sysRange = [path rangeOfString:@"/System/Library/PreferenceBundles" options:0];
     if (sysRange.location != NSNotFound) {

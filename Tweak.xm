@@ -26,7 +26,7 @@ static NSInteger _extraPrefsGroupSectionID = 0;
 
 /* {{{ iPad Hooks */
 %group iPad
-- (NSString *)tableView: (UITableView *)view titleForHeaderInSection: (NSInteger)section {
+- (NSString *)tableView:(UITableView *)view titleForHeaderInSection:(NSInteger)section {
     if ([_loadedSpecifiers count] == 0)
         return %orig;
     if (section == _extraPrefsGroupSectionID)
