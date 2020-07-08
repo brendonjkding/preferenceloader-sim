@@ -7,7 +7,7 @@
 
 /* {{{ Imports (Preferences.framework) */
 // Weak (3.2+, dlsym)
-static NSString * *pPSTableCellUseEtchedAppearanceKey = NULL;
+static NSString * __strong *pPSTableCellUseEtchedAppearanceKey = NULL;
 /* }}} */
 
 /* {{{ UIDevice 3.2 Additions */
@@ -56,9 +56,10 @@ static NSInteger PSSpecifierSort(PSSpecifier *a1, PSSpecifier *a2, void *context
     if (first) {
         PLLog(@"initial invocation for -specifiers");
         %orig;
-        [_loadedSpecifiers release];
+        // [_loadedSpecifiers release];
         _loadedSpecifiers = [[NSMutableArray alloc] init];
         NSArray *subpaths = [[NSFileManager defaultManager] subpathsOfDirectoryAtPath:_realPath2(@"/Library/PreferenceLoader/Preferences") error:NULL];
+
         for (NSString *item in subpaths) {
             if (![[item pathExtension] isEqualToString:@"plist"])
                 continue;
@@ -90,6 +91,7 @@ static NSInteger PSSpecifierSort(PSSpecifier *a1, PSSpecifier *a2, void *context
             PLLog(@"appending to the array!");
             [_loadedSpecifiers addObjectsFromArray:specs];
         }
+
 
         [_loadedSpecifiers sortUsingFunction:(NSInteger (*)(id, id, void *))&PSSpecifierSort context:NULL];
 
@@ -140,7 +142,7 @@ static NSInteger PSSpecifierSort(PSSpecifier *a1, PSSpecifier *a2, void *context
 
     void *preferencesHandle = dlopen(_realPath("/System/Library/PrivateFrameworks/Preferences.framework/Preferences"), RTLD_LAZY | RTLD_NOLOAD);
     if (preferencesHandle) {
-        pPSTableCellUseEtchedAppearanceKey = (NSString * *)dlsym(preferencesHandle, "PSTableCellUseEtchedAppearanceKey");
+        pPSTableCellUseEtchedAppearanceKey = (NSString * __strong *)dlsym(preferencesHandle, "PSTableCellUseEtchedAppearanceKey");
         dlclose(preferencesHandle);
     }
 }
