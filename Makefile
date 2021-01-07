@@ -1,4 +1,4 @@
-DEBUG = 0
+DEBUG ?= 1
 TARGET = simulator:clang:11.2:8.0
 
 include $(THEOS)/makefiles/common.mk

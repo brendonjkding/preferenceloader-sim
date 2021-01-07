@@ -102,8 +102,8 @@ static NSInteger PSSpecifierSort(PSSpecifier *a1, PSSpecifier *a2, void *context
             NSMutableArray *_specifiers = MSHookIvar<NSMutableArray *>(self, "_specifiers");
             NSInteger group, row;
             NSInteger firstindex;
-            if ([self getGroup:&group row:&row ofSpecifierID:_Firmware_lt_60 ? @"General" : @"TWITTER"]) {
-                firstindex = [self indexOfGroup:group] + [[self specifiersInGroup:group] count];
+            if ([self getGroup:&group row:&row ofSpecifierID:@"PRIMARY_APPLE_ACCOUNT_GROUP"]) {
+                firstindex = [self indexOfGroup:group] + [[self specifiersInGroup:group] count] + 1;
                 PLLog(@"Adding to the end of group %ld at index %ld", (long)group, (long)firstindex);
             } else {
                 firstindex = [_specifiers count];
