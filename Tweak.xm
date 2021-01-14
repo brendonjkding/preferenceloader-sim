@@ -104,6 +104,7 @@ static NSInteger PSSpecifierSort(PSSpecifier *a1, PSSpecifier *a2, void *context
             NSInteger firstindex;
             if ([self getGroup:&group row:&row ofSpecifierID:@"PRIMARY_APPLE_ACCOUNT_GROUP"]) {
                 firstindex = [self indexOfGroup:group] + [[self specifiersInGroup:group] count] + 1;
+                if([[[UIDevice currentDevice] systemVersion] intValue] == 13) firstindex--;
                 PLLog(@"Adding to the end of group %ld at index %ld", (long)group, (long)firstindex);
             } else {
                 firstindex = [_specifiers count];
