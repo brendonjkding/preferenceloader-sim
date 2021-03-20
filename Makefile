@@ -76,7 +76,7 @@ remove::
 	@sudo rm -f $(PL_ROOT_BUNDLES_PATH) $(PL_ROOT_PL_PATH)
 	#lib
 	@sudo rm -f $(PL_SIMULATOR_ROOT)/usr/lib/$(LIBRARY_NAME).dylib
-	@sudo rm -f /usr/lib/$(LIBRARY_NAME).dylib
+	@sudo rm -f /usr/lib/$(LIBRARY_NAME).dylib || true
 	#tweak
 	@rm -f /opt/simject/$(TWEAK_NAME).dylib /opt/simject/$(TWEAK_NAME).plist
 	@rm -f $(THEOS)/makefiles/locatesim.mk
