@@ -38,11 +38,9 @@ $(shell ln -s $(PWD)/locatesim.mk $(THEOS)/makefiles/locatesim.mk)
 
 include locatesim.mk
 
-setup:: all
-	#bundle & loader path (sim)
-	@[ -d $(PL_SIMULATOR_BUNDLES_PATH) ] || sudo mkdir -p $(PL_SIMULATOR_BUNDLES_PATH)
-	@[ -d $(PL_SIMULATOR_PLISTS_PATH) ] || sudo mkdir -p $(PL_SIMULATOR_PLISTS_PATH)
+SIMULATOR = 1
 
+setup::
 	#bundle & loader path (root)
 	@[ -d $(PL_ROOT_BUNDLES_PATH) ] || sudo ln -s  $(PL_SIMULATOR_BUNDLES_PATH)  $(PL_ROOT_BUNDLES_PATH)
 	@[ -d $(PL_ROOT_PLISTS_PATH) ] || sudo ln -s  $(PL_SIMULATOR_PL_PATH) $(PL_ROOT_PL_PATH)
@@ -54,30 +52,9 @@ setup:: all
 	@[ -d /User ] || echo -e "\x1b[1;35m>> warning: create symlink /User to /var/mobile manually if needed\x1b[m" || true
 
 	#lib
-	@[ -d $(PL_SIMULATOR_ROOT)/usr/lib ] || sudo mkdir -p $(PL_SIMULATOR_ROOT)/usr/lib
-	@sudo rm -f $(PL_SIMULATOR_ROOT)/usr/lib/$(LIBRARY_NAME).dylib
-	@sudo cp -v $(THEOS_OBJ_DIR)/$(LIBRARY_NAME).dylib $(PL_SIMULATOR_ROOT)/usr/lib
-	@sudo codesign -f -s - $(PL_SIMULATOR_ROOT)/usr/lib/$(LIBRARY_NAME).dylib
-	@[ -f /usr/lib/$(LIBRARY_NAME).dylib ] || sudo ln -s $(PL_SIMULATOR_ROOT)/usr/lib/$(LIBRARY_NAME).dylib /usr/lib/$(LIBRARY_NAME).dylib || true
-	@[ -f /usr/lib/$(LIBRARY_NAME).dylib ] || echo -e "\x1b[1;35m>> warning: create symlink in /usr/lib yourself if needed\x1b[m" || true
-
-	#tweak
-	@rm -f /opt/simject/$(TWEAK_NAME).dylib
-	@cp -v $(THEOS_OBJ_DIR)/$(TWEAK_NAME).dylib /opt/simject
-	@sudo codesign -f -s - /opt/simject/$(TWEAK_NAME).dylib
-	@cp -v $(PWD)/$(TWEAK_NAME).plist /opt/simject
-	@resim
+	@[ -f /usr/lib/$(LIBRARY_NAME).dylib ] || sudo ln -s $(PL_SIMJECT_ROOT)/usr/lib/$(LIBRARY_NAME).dylib /usr/lib/$(LIBRARY_NAME).dylib || true
+	@[ -f /usr/lib/$(LIBRARY_NAME).dylib ] || echo -e "\x1b[1;35m>> warning: create symlink in /usr/lib yourself \x1b[m" || true
 
 remove::
-	#bundle & loader path (sim)
-	@[ ! -d $(PL_SIMULATOR_BUNDLES_PATH) ] || sudo rm -d $(PL_SIMULATOR_BUNDLES_PATH) || true
-	@[ ! -d $(PL_SIMULATOR_PLISTS_PATH) ] || sudo rm -d $(PL_SIMULATOR_PLISTS_PATH) || true
 	#bundle & loader path (root)
 	@sudo rm -f $(PL_ROOT_BUNDLES_PATH) $(PL_ROOT_PL_PATH)
-	#lib
-	@sudo rm -f $(PL_SIMULATOR_ROOT)/usr/lib/$(LIBRARY_NAME).dylib
-	@sudo rm -f /usr/lib/$(LIBRARY_NAME).dylib || true
-	#tweak
-	@rm -f /opt/simject/$(TWEAK_NAME).dylib /opt/simject/$(TWEAK_NAME).plist
-	@rm -f $(THEOS)/makefiles/locatesim.mk
-	@resim

@@ -17,9 +17,11 @@ endif
 
 PL_ROOT=
 
-PL_SIMULATOR_BUNDLES_PATH = $(PL_SIMULATOR_ROOT)/Library/PreferenceBundles
-PL_SIMULATOR_PLISTS_PATH = $(PL_SIMULATOR_ROOT)/Library/PreferenceLoader/Preferences
-PL_SIMULATOR_PL_PATH = $(PL_SIMULATOR_ROOT)/Library/PreferenceLoader
+PL_SIMJECT_ROOT = /opt/simject
+
+PL_SIMULATOR_BUNDLES_PATH = $(PL_SIMJECT_ROOT)/Library/PreferenceBundles
+PL_SIMULATOR_PLISTS_PATH = $(PL_SIMJECT_ROOT)/Library/PreferenceLoader/Preferences
+PL_SIMULATOR_PL_PATH = $(PL_SIMJECT_ROOT)/Library/PreferenceLoader
 
 PL_ROOT_BUNDLES_PATH = $(PL_ROOT)/Library/PreferenceBundles
 PL_ROOT_PLISTS_PATH = $(PL_ROOT)/Library/PreferenceLoader/Preferences
