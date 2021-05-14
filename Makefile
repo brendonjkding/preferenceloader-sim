@@ -1,7 +1,5 @@
 DEBUG ?= 1
-TARGET = simulator:clang:11.2:8.0
-
-include $(THEOS)/makefiles/common.mk
+TARGET = simulator:clang:latest:8.0
 
 LIBRARY_NAME = libprefs
 libprefs_LOGOSFLAGS = -c generator=internal
@@ -22,6 +20,7 @@ PreferenceLoader_LIBRARIES = prefs
 PreferenceLoader_CFLAGS = -fobjc-arc -I.
 PreferenceLoader_LDFLAGS = -L$(THEOS_OBJ_DIR)
 
+include $(THEOS)/makefiles/common.mk
 include $(THEOS_MAKE_PATH)/library.mk
 include $(THEOS_MAKE_PATH)/tweak.mk
 
