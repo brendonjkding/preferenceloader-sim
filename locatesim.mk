@@ -15,13 +15,13 @@ else
 PL_SIMULATOR_ROOT = /Library/Developer/CoreSimulator/Profiles/Runtimes/iOS\ $(PL_SIMULATOR_VERSION).simruntime/Contents/Resources/RuntimeRoot
 endif
 
-PL_ROOT=
+PL_ROOT =
 
 PL_SIMJECT_ROOT = /opt/simject
 
-PL_SIMULATOR_BUNDLES_PATH = $(PL_SIMJECT_ROOT)/Library/PreferenceBundles
-PL_SIMULATOR_PLISTS_PATH = $(PL_SIMJECT_ROOT)/Library/PreferenceLoader/Preferences
-PL_SIMULATOR_PL_PATH = $(PL_SIMJECT_ROOT)/Library/PreferenceLoader
+PL_SIMJECT_BUNDLES_PATH = $(PL_SIMJECT_ROOT)/Library/PreferenceBundles
+PL_SIMJECT_PLISTS_PATH = $(PL_SIMJECT_ROOT)/Library/PreferenceLoader/Preferences
+PL_SIMJECT_PL_PATH = $(PL_SIMJECT_ROOT)/Library/PreferenceLoader
 
 PL_ROOT_BUNDLES_PATH = $(PL_ROOT)/Library/PreferenceBundles
 PL_ROOT_PLISTS_PATH = $(PL_ROOT)/Library/PreferenceLoader/Preferences

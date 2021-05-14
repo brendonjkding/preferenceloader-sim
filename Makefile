@@ -32,17 +32,14 @@ include $(THEOS_MAKE_PATH)/tweak.mk
 # In this hack, we force the linker to search `$THEOS_OBJ_DIR` first by setting `$TARGET_LD`.
 TARGET_LD := $(TARGET_LD) -L$(THEOS_OBJ_DIR)
 
-$(shell rm -f $(THEOS)/makefiles/locatesim.mk)
-$(shell ln -s $(PWD)/locatesim.mk $(THEOS)/makefiles/locatesim.mk)
-
 include locatesim.mk
 
 SIMULATOR = 1
 
 setup::
 	#bundle & loader path (root)
-	@[ -d $(PL_ROOT_BUNDLES_PATH) ] || sudo ln -s  $(PL_SIMULATOR_BUNDLES_PATH)  $(PL_ROOT_BUNDLES_PATH)
-	@[ -d $(PL_ROOT_PLISTS_PATH) ] || sudo ln -s  $(PL_SIMULATOR_PL_PATH) $(PL_ROOT_PL_PATH)
+	@[ -L $(PL_ROOT_BUNDLES_PATH) ] || sudo ln -s  $(PL_SIMJECT_BUNDLES_PATH)  $(PL_ROOT_BUNDLES_PATH)
+	@[ -L $(PL_ROOT_PL_PATH) ] || sudo ln -s  $(PL_SIMJECT_PL_PATH) $(PL_ROOT_PL_PATH)
 
 	#pref path
 	@[ -d /var/mobile/Library/Preferences ] || sudo mkdir -p /var/mobile/Library/Preferences
@@ -51,9 +48,10 @@ setup::
 	@[ -d /User ] || echo -e "\x1b[1;35m>> warning: create symlink /User to /var/mobile manually if needed\x1b[m" || true
 
 	#lib
-	@[ -f /usr/lib/$(LIBRARY_NAME).dylib ] || sudo ln -s $(PL_SIMJECT_ROOT)/usr/lib/$(LIBRARY_NAME).dylib /usr/lib/$(LIBRARY_NAME).dylib || true
-	@[ -f /usr/lib/$(LIBRARY_NAME).dylib ] || echo -e "\x1b[1;35m>> warning: create symlink in /usr/lib yourself \x1b[m" || true
+	@[ -f $(SIMULATOR_ROOT)/usr/lib/$(LIBRARY_NAME).dylib ] || sudo ln -s $(PL_SIMJECT_ROOT)/usr/lib/$(LIBRARY_NAME).dylib $(SIMULATOR_ROOT)/usr/lib/$(LIBRARY_NAME).dylib || true
+	@[ -f $(SIMULATOR_ROOT)/usr/lib/$(LIBRARY_NAME).dylib ] || echo -e "\x1b[1;35m>> warning: create symlink in $(SIMULATOR_ROOT)/usr/lib yourself \x1b[m" || true
 
 remove::
 	#bundle & loader path (root)
 	@sudo rm -f $(PL_ROOT_BUNDLES_PATH) $(PL_ROOT_PL_PATH)
+	@rm -f $(SIMULATOR_ROOT)/usr/lib/$(LIBRARY_NAME).dylib
