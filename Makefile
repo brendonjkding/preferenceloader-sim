@@ -48,8 +48,8 @@ setup::
 	@[ -d /User ] || echo -e "\x1b[1;35m>> warning: create symlink /User to /var/mobile manually if needed\x1b[m" || true
 
 	#lib
-	@[ -f $(SIMULATOR_ROOT)/usr/lib/$(LIBRARY_NAME).dylib ] || sudo ln -s $(PL_SIMJECT_ROOT)/usr/lib/$(LIBRARY_NAME).dylib $(SIMULATOR_ROOT)/usr/lib/$(LIBRARY_NAME).dylib || true
-	@[ -f $(SIMULATOR_ROOT)/usr/lib/$(LIBRARY_NAME).dylib ] || echo -e "\x1b[1;35m>> warning: create symlink in $(SIMULATOR_ROOT)/usr/lib yourself \x1b[m" || true
+	@[ -f "$(SIMULATOR_ROOT)/usr/lib/$(LIBRARY_NAME).dylib" ] || sudo ln -s $(PL_SIMJECT_ROOT)/usr/lib/$(LIBRARY_NAME).dylib "$(SIMULATOR_ROOT)/usr/lib/$(LIBRARY_NAME).dylib" || true
+	@[ -f "$(SIMULATOR_ROOT)/usr/lib/$(LIBRARY_NAME).dylib" ] || echo -e "\x1b[1;35m>> warning: create symlink in $(SIMULATOR_ROOT)/usr/lib yourself \x1b[m" || true
 
 remove::
 	#bundle & loader path (root)
