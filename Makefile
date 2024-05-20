@@ -30,7 +30,7 @@ include $(THEOS_MAKE_PATH)/tweak.mk
 # This happens because theos internally set "$THEOS/vendor/lib" as a search dir,
 # and `PreferenceLoader_LDFLAGS` has lower priority than that.
 # In this hack, we force the linker to search `$THEOS_OBJ_DIR` first by setting `$TARGET_LD`.
-TARGET_LD := $(TARGET_LD) -L$(THEOS_OBJ_DIR)
+TARGET_LD := $(TARGET_LD) -L.
 
 include locatesim.mk
 
@@ -47,11 +47,6 @@ setup::
 	@[ -d /User ] || sudo ln -s /var/mobile /User || true
 	@[ -d /User ] || echo -e "\x1b[1;35m>> warning: create symlink /User to /var/mobile manually if needed\x1b[m" || true
 
-	#lib
-	@[ -f "$(SIMULATOR_ROOT)/usr/lib/$(LIBRARY_NAME).dylib" ] || sudo ln -s $(PL_SIMJECT_ROOT)/usr/lib/$(LIBRARY_NAME).dylib "$(SIMULATOR_ROOT)/usr/lib/$(LIBRARY_NAME).dylib" || true
-	@[ -f "$(SIMULATOR_ROOT)/usr/lib/$(LIBRARY_NAME).dylib" ] || echo -e "\x1b[1;35m>> warning: create symlink in $(SIMULATOR_ROOT)/usr/lib yourself \x1b[m" || true
-
 remove::
 	#bundle & loader path (root)
 	@sudo rm -f $(PL_ROOT_BUNDLES_PATH) $(PL_ROOT_PL_PATH)
-	@rm -f $(SIMULATOR_ROOT)/usr/lib/$(LIBRARY_NAME).dylib
